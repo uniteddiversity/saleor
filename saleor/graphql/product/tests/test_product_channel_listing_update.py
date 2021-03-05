@@ -59,7 +59,7 @@ def test_product_channel_listing_update_duplicated_ids_in_add_and_remove(
     variables = {
         "id": product_id,
         "input": {
-            "addChannels": [{"channelId": channel_id, "isPublished": True}],
+            "updateChannels": [{"channelId": channel_id, "isPublished": True}],
             "removeChannels": [channel_id],
         },
     }
@@ -91,7 +91,7 @@ def test_product_channel_listing_update_duplicated_channel_in_add(
     variables = {
         "id": product_id,
         "input": {
-            "addChannels": [
+            "updateChannels": [
                 {"channelId": channel_id, "isPublished": True},
                 {"channelId": channel_id, "isPublished": False},
             ],
@@ -111,7 +111,7 @@ def test_product_channel_listing_update_duplicated_channel_in_add(
         "productChannelListingErrors"
     ]
     assert len(errors) == 1
-    assert errors[0]["field"] == "addChannels"
+    assert errors[0]["field"] == "updateChannels"
     assert errors[0]["code"] == ProductErrorCode.DUPLICATED_INPUT_ITEM.name
     assert errors[0]["channels"] == [channel_id]
 
@@ -177,7 +177,7 @@ def test_product_channel_listing_update_with_empty_lists_in_input(
     product_id = graphene.Node.to_global_id("Product", product.pk)
     variables = {
         "id": product_id,
-        "input": {"addChannels": [], "removeChannels": []},
+        "input": {"updateChannels": [], "removeChannels": []},
     }
 
     # when
@@ -206,7 +206,7 @@ def test_product_channel_listing_update_as_staff_user(
     variables = {
         "id": product_id,
         "input": {
-            "addChannels": [
+            "updateChannels": [
                 {
                     "channelId": channel_id,
                     "isPublished": False,
@@ -285,7 +285,7 @@ def test_product_channel_listing_update_trigger_webhook_product_updated(
     variables = {
         "id": product_id,
         "input": {
-            "addChannels": [
+            "updateChannels": [
                 {
                     "channelId": channel_id,
                     "isPublished": False,
@@ -321,7 +321,7 @@ def test_product_channel_listing_update_as_app(
     variables = {
         "id": product_id,
         "input": {
-            "addChannels": [
+            "updateChannels": [
                 {
                     "channelId": channel_id,
                     "isPublished": False,
@@ -378,7 +378,7 @@ def test_product_channel_listing_update_as_customer(
     channel_id = graphene.Node.to_global_id("Channel", channel_PLN.id)
     variables = {
         "id": product_id,
-        "input": {"addChannels": [{"channelId": channel_id, "isPublished": False}]},
+        "input": {"updateChannels": [{"channelId": channel_id, "isPublished": False}]},
     }
 
     # when
@@ -396,7 +396,7 @@ def test_product_channel_listing_update_as_anonymous(api_client, product, channe
     channel_id = graphene.Node.to_global_id("Channel", channel_PLN.id)
     variables = {
         "id": product_id,
-        "input": {"addChannels": [{"channelId": channel_id, "isPublished": False}]},
+        "input": {"updateChannels": [{"channelId": channel_id, "isPublished": False}]},
     }
 
     # when
@@ -419,7 +419,7 @@ def test_product_channel_listing_update_add_channel(
     variables = {
         "id": product_id,
         "input": {
-            "addChannels": [
+            "updateChannels": [
                 {
                     "channelId": channel_id,
                     "isPublished": False,
@@ -471,7 +471,7 @@ def test_product_channel_listing_update_add_channel_without_publication_date(
     channel_id = graphene.Node.to_global_id("Channel", channel_PLN.id)
     variables = {
         "id": product_id,
-        "input": {"addChannels": [{"channelId": channel_id, "isPublished": True}]},
+        "input": {"updateChannels": [{"channelId": channel_id, "isPublished": True}]},
     }
 
     # when
@@ -507,7 +507,7 @@ def test_product_channel_listing_update_unpublished(
     channel_id = graphene.Node.to_global_id("Channel", channel_USD.id)
     variables = {
         "id": product_id,
-        "input": {"addChannels": [{"channelId": channel_id, "isPublished": False}]},
+        "input": {"updateChannels": [{"channelId": channel_id, "isPublished": False}]},
     }
 
     # when
@@ -547,7 +547,7 @@ def test_product_channel_listing_update_publish_without_publication_date(
     channel_id = graphene.Node.to_global_id("Channel", channel_USD.id)
     variables = {
         "id": product_id,
-        "input": {"addChannels": [{"channelId": channel_id, "isPublished": True}]},
+        "input": {"updateChannels": [{"channelId": channel_id, "isPublished": True}]},
     }
 
     # when
@@ -580,7 +580,9 @@ def test_product_channel_listing_update_remove_publication_date(
     channel_id = graphene.Node.to_global_id("Channel", channel_USD.id)
     variables = {
         "id": product_id,
-        "input": {"addChannels": [{"channelId": channel_id, "publicationDate": None}]},
+        "input": {
+            "updateChannels": [{"channelId": channel_id, "publicationDate": None}]
+        },
     }
 
     # when
@@ -616,7 +618,7 @@ def test_product_channel_listing_update_visible_in_listings(
     variables = {
         "id": product_id,
         "input": {
-            "addChannels": [{"channelId": channel_id, "visibleInListings": False}]
+            "updateChannels": [{"channelId": channel_id, "visibleInListings": False}]
         },
     }
 
@@ -654,7 +656,7 @@ def test_product_channel_listing_update_update_publication_data(
     variables = {
         "id": product_id,
         "input": {
-            "addChannels": [
+            "updateChannels": [
                 {
                     "channelId": channel_id,
                     "isPublished": False,
@@ -700,7 +702,9 @@ def test_product_channel_listing_update_update_is_available_for_purchase_false(
     variables = {
         "id": product_id,
         "input": {
-            "addChannels": [{"channelId": channel_id, "isAvailableForPurchase": False}]
+            "updateChannels": [
+                {"channelId": channel_id, "isAvailableForPurchase": False}
+            ]
         },
     }
 
@@ -734,7 +738,9 @@ def test_product_channel_listing_update_update_is_available_for_purchase_without
     variables = {
         "id": product_id,
         "input": {
-            "addChannels": [{"channelId": channel_id, "isAvailableForPurchase": True}]
+            "updateChannels": [
+                {"channelId": channel_id, "isAvailableForPurchase": True}
+            ]
         },
     }
 
@@ -772,7 +778,7 @@ def test_product_channel_listing_update_update_is_available_for_purchase_past_da
     variables = {
         "id": product_id,
         "input": {
-            "addChannels": [
+            "updateChannels": [
                 {
                     "channelId": channel_id,
                     "isAvailableForPurchase": True,
@@ -816,7 +822,7 @@ def test_product_channel_listing_update_update_is_available_for_purchase_future_
     variables = {
         "id": product_id,
         "input": {
-            "addChannels": [
+            "updateChannels": [
                 {
                     "channelId": channel_id,
                     "isAvailableForPurchase": True,
@@ -860,7 +866,7 @@ def test_product_channel_listing_update_update_is_available_for_purchase_false_a
     variables = {
         "id": product_id,
         "input": {
-            "addChannels": [
+            "updateChannels": [
                 {
                     "channelId": channel_id,
                     "isAvailableForPurchase": False,
@@ -966,7 +972,7 @@ def test_product_channel_listing_update_publish_product_without_category(
     variables = {
         "id": product_id,
         "input": {
-            "addChannels": [
+            "updateChannels": [
                 {"channelId": channel_usd_id, "isPublished": True},
                 {"channelId": channel_pln_id, "isPublished": False},
             ]
